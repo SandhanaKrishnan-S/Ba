@@ -1,6 +1,9 @@
 const { default: mongoose } = require('mongoose');
+const Urls = require('../url');
 
-const connections = mongoose.createConnection('mongodb+srv://sandhanakrishnansakthivel:maragathamsakthi@sih-db.nfwko1x.mongodb.net/sih').on('open' , () => {
+const urls = new Urls();
+
+const connections = mongoose.createConnection(`${urls.dburl}sih`).on('open' , () => {
     console.log("Connected");
 }).on('error' , () => {
     console.log("Connection error");

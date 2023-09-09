@@ -36,10 +36,19 @@ userSchema.pre('save' , async function() {
 
         user.password = hashpass;
     } catch (error) {
-        
+        throw error;
     }
 })
 
-const userModel = connections.model('clientUser' , userSchema);
+userSchema.methods.compare = async function(userPass) {
+    try {
+        const isMatch = await bcrypt.compare(userPass , this.password);
+        return isMatch;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const userModel = mongoose.model('clientUser' , userSchema);
 
 module.exports = userModel;

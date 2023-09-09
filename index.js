@@ -1,17 +1,26 @@
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const app = require('./app');
-const database = require('./config/database.js');
-const userModel = require('./model/user.model.js');
+const Urls = require('./url'); 
 const http = require('http').Server(app);
 
-const port = 3533;
 
-mongoose.connect("mongodb+srv://sandhanakrishnansakthivel:maragathamsakthi@sih-db.nfwko1x.mongodb.net/");
+const urls = new Urls(); 
 
-app.get('/' , (req , res) => {
+mongoose.connect(urls.dburl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
+
+app.get('/', (req, res) => {
     res.send("Hello World!!");
 });
 
 http.listen(port, () => {
-    console.log(`Example app listening on port http://localhost:${port}`)
-  });
+    console.log(`Example app listening on port ${urls.hosturl}`);
+});
